@@ -22,7 +22,7 @@ public class FpsTextController : MonoBehaviour
 
         if (time >= 0.5f)
         {
-            //Debug.LogFormat("{0}fps", frameCount / time);
+            Debug.LogFormat("{0}fps", frameCount / time);
             gameObject.transform.GetComponent<Text>().text = "FPS : " + frameCount.ToString();
 
             frameCount = 0;
