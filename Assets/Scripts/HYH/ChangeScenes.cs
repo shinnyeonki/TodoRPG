@@ -21,4 +21,9 @@ public class ChangeScenes : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Main")
             SceneManager.LoadScene("Main");
     }
+    public void ChangeItemScence()
+    {
+        if (SceneManager.GetActiveScene().name != "item")
+            SceneManager.LoadScene("item");
+    }
 }
