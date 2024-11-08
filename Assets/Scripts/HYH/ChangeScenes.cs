@@ -21,4 +21,9 @@ public class ChangeScenes : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Main")
             SceneManager.LoadScene("Main");
     }
+    public void ChangeShopScence()
+    {
+        if (SceneManager.GetActiveScene().name != "Shop")
+            SceneManager.LoadScene("Shop");
+    }
 }
