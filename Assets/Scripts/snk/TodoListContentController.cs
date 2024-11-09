@@ -23,7 +23,7 @@ public class TodoListContentController : MonoBehaviour
 
     public void AddTodo(string key, string todoText)
     {
-        // プレハブからインスタンスを生成
+        // 프리팹에서 인스턴스를 생성
         GameObject todoElementPrefab = (GameObject)Resources.Load("Prefabs/TodoElement");
         GameObject todoElementObject = Instantiate(todoElementPrefab) as GameObject;
         todoElementObject.transform.GetComponent<TodoElementController>().Key = key;

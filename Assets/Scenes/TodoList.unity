@@ -410,7 +410,7 @@ GameObject:
   - component: {fileID: 122315772}
   - component: {fileID: 122315771}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: TestViewButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,17 +423,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122315769}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.24999997, y: 0.24999997, z: 0.24999997}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 651486348}
-  m_Father: {fileID: 620094498}
+  m_Father: {fileID: 1535669740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 303.6, y: 634.99994}
+  m_AnchoredPosition: {x: 75.90001, y: 158.75003}
   m_SizeDelta: {x: 143.88, y: 83.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &122315771
@@ -819,7 +819,7 @@ GameObject:
   - component: {fileID: 282205903}
   - component: {fileID: 282205902}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: 'TestExtractButton '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -832,17 +832,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282205900}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.24999997, y: 0.24999997, z: 0.24999997}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1439828151}
-  m_Father: {fileID: 620094498}
+  m_Father: {fileID: 1535669740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 121.93997, y: 634.99994}
+  m_AnchoredPosition: {x: 37.2, y: 158.75003}
   m_SizeDelta: {x: 143.88, y: 83.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &282205902
@@ -1197,9 +1197,6 @@ RectTransform:
   m_Children:
   - {fileID: 776365570}
   - {fileID: 1656216911}
-  - {fileID: 1225763392}
-  - {fileID: 282205901}
-  - {fileID: 122315770}
   m_Father: {fileID: 736298387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1362,7 +1359,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: view
+  m_text: Queview
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2304,7 +2301,7 @@ GameObject:
   - component: {fileID: 1225763394}
   - component: {fileID: 1225763393}
   m_Layer: 5
-  m_Name: Button
+  m_Name: TestInputButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2317,17 +2314,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225763391}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.24999997, y: 0.24999997, z: 0.24999997}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1481181233}
-  m_Father: {fileID: 620094498}
+  m_Father: {fileID: 1535669740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -71.94, y: 635}
+  m_AnchoredPosition: {x: -1.5, y: 158.75006}
   m_SizeDelta: {x: 143.88, y: 83.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1225763393
@@ -2377,13 +2374,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1852032285}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: AddTodoDone
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: null
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1225763394
@@ -2757,7 +2754,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: extract
+  m_text: Queextract
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2970,7 +2967,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: input
+  m_text: 'Queinput
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3145,6 +3144,9 @@ RectTransform:
   - {fileID: 1913942290}
   - {fileID: 906085902}
   - {fileID: 199780892}
+  - {fileID: 1225763392}
+  - {fileID: 282205901}
+  - {fileID: 122315770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
