@@ -13,7 +13,7 @@ public class TodoElementController : MonoBehaviour
         if (todoList == null)
         {
             Debug.Log("todoList : null");
-            todoList = new Dictionary<string, string>();
+            todoList = new Dictionary<string, StorageManager.TodoItem>();
         }
         Debug.Log("todoList count before deleting : " + todoList.Count);
         // Todo를 제거하고 저장합니다.
@@ -32,7 +32,7 @@ public class TodoElementController : MonoBehaviour
         if (todoList == null)
         {
             Debug.Log("todoList : null");
-            todoList = new Dictionary<string, string>();
+            todoList = new Dictionary<string, StorageManager.TodoItem>();
         }
         Debug.Log("todoList count before completed : " + todoList.Count);
         // Todo를 제거하고 저장합니다.
