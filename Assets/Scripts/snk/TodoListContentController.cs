@@ -41,7 +41,8 @@ public class TodoListContentController : MonoBehaviour
         todoElementObject.transform.Find("TaskRawImage").transform.Find("TodoText").GetComponent<Text>().text = todoText;
         todoElementObject.transform.Find("TaskRawImage").transform.Find("TodoDate").GetComponent<Text>().text = dueDate.ToString("yyyy-MM-dd HH:mm:ss");
         todoElementObject.transform.Find("TaskRawImage").transform.Find("TodoPriorityToggle").GetComponent<Toggle>().isOn = isPriority;
-        todoElementObject.transform.SetParent(transform);
+        todoElementObject.transform.SetParent(transform, false);
+        todoElementObject.transform.SetSiblingIndex(0);
 
 
         // > Unity - Scripting API： Transform.localScale

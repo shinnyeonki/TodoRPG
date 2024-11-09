@@ -7,7 +7,6 @@ public class TodoElementController : MonoBehaviour
     public string Key;
     public void DeleteSelf()
     {
-
         // 모든 Todo를 가져옵니다.
         var todoList = StorageManager.GetAll();
         if (todoList == null)
@@ -46,4 +45,27 @@ public class TodoElementController : MonoBehaviour
         // 목록에서도 삭제합니다.
         Destroy(gameObject);
     }
+    public void ChangePriority(bool isPriority)
+    {
+        // 모든 Todo를 가져옵니다.
+        var todoList = StorageManager.GetAll();
+        if (todoList == null)
+        {
+            Debug.Log("todoList : null");
+            todoList = new Dictionary<string, StorageManager.TodoItem>();
+        }
+
+        // Todo를 찾고 우선순위를 변경합니다.
+        if (todoList.ContainsKey(Key))
+        {
+            todoList[Key].IsPriority = isPriority;
+            StorageManager.Save(todoList);
+            Debug.Log("Priority changed for Todo" + todoList[Key].IsPriority);
+        }
+        else
+        {
+            Debug.Log("Todo with key: " + Key + " not found.");
+        }
+    }
+
 }
