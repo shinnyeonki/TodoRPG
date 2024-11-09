@@ -39,8 +39,8 @@ public class TodoListContentController : MonoBehaviour
 
         // TodoElementController 스크립트에 todoText,
         todoElementObject.transform.Find("TaskRawImage").transform.Find("TodoText").GetComponent<Text>().text = todoText;
-        todoElementObject.transform.Find("TaskRawImage").transform.Find("DueDateText").GetComponent<Text>().text = dueDate.ToString("yyyy-MM-dd");
-        todoElementObject.transform.Find("TaskRawImage").transform.Find("PriorityToggle").GetComponent<Toggle>().isOn = isPriority;
+        todoElementObject.transform.Find("TaskRawImage").transform.Find("TodoDate").GetComponent<Text>().text = dueDate.ToString("yyyy-MM-dd HH:mm:ss");
+        todoElementObject.transform.Find("TaskRawImage").transform.Find("TodoPriorityToggle").GetComponent<Toggle>().isOn = isPriority;
         todoElementObject.transform.SetParent(transform);
 
 
