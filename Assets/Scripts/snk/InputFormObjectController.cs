@@ -30,18 +30,29 @@ public class InputFormObjectController : MonoBehaviour
     {
         //  todo list 가져오기
         var todoList = StorageManager.GetAll();
-        if (todoList == null) { // todo list 에 아무것도 없을 때
+        if (todoList == null) { // todo list 에 아무것도 없을 때 만들어서 사용
             Debug.Log("todoList : null");
-            todoList = new Dictionary<string, string>();
+            todoList = new Dictionary<string, StorageManager.TodoItem>();
         }
         Debug.Log("todoList count : " + todoList.Count);
         // todo list 에 추가하고 저장 key를 고유하게 고유하게 식별하기
-        var key = Convert.ToString((DateTime.UtcNow - UnixEpoch).TotalMilliseconds);
-        todoList.Add(key, inputField.text);
+        var key = Convert.ToString((DateTime.UtcNow - UnixEpoch).TotalMilliseconds); // 고유한 키 생성
+
+        // TodoItem 객체 생성해서 데이터 넣기
+        var todoItem = new StorageManager.TodoItem
+        {
+            CreationDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow.AddDays(7), // 임시용: 예시로 7일 후를 마감일로 설정
+            Text = inputField.text,
+            IsPriority = false // 예시로 우선순위를 false로 설정
+        };
+
+        // todo list에 추가하고 저장
+        todoList.Add(key, todoItem);
         StorageManager.Save(todoList);
 
         // todo list 추가
-        taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, inputField.text);
+        taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, todoItem.Text, todoItem.DueDate, todoItem.IsPriority);
 
         // text 필드 다시 초기화
         inputField.text = null;

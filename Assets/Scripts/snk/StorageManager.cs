@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -10,17 +10,28 @@ public class StorageManager
 
     private static string masterKey = "e82d33663b9995d23cd93a7a68b782";
 
-    public static Dictionary<string, string> GetAll()
+    [Serializable]
+    public class TodoItem
     {
-        if (!PlayerPrefs.HasKey(masterKey)) {
-            return null;
-        }
-        string value = PlayerPrefs.GetString(masterKey);
-        return Deserialize<Dictionary<string, string>>(value);
+        public DateTime CreationDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string Text { get; set; }
+        public bool IsPriority { get; set; }
     }
 
-    public static void Save(Dictionary<string, string> todoList) {
-        PlayerPrefs.SetString(masterKey, Serialize<Dictionary<string, string>>(todoList));
+    public static Dictionary<string, TodoItem> GetAll()
+    {
+        if (!PlayerPrefs.HasKey(masterKey))
+        {
+            return null;
+        }
+        string masterKeyValue = PlayerPrefs.GetString(masterKey);
+        return Deserialize<Dictionary<string, TodoItem>>(masterKeyValue); //역직렬화 해서 반환 즉 저장된 데이터를 string + 객체 = dictionary로 반환
+    }
+
+    public static void Save(Dictionary<string, TodoItem> todoList)
+    {
+        PlayerPrefs.SetString(masterKey, Serialize(todoList));
     }
 
     // > Saving a Dictionary To PlayerPrefs - Unity Answers  
