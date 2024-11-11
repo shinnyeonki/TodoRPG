@@ -44,7 +44,7 @@ public class InputFormObjectController : MonoBehaviour
             CreationDate = DateTime.UtcNow,
             DueDate = DateTime.UtcNow.AddDays(7), // 임시용: 예시로 7일 후를 마감일로 설정
             Text = inputField.text,
-            IsPriority = false // 예시로 우선순위를 false로 설정
+            IsPriority = false // defalut 우선순위를 false로 설정
         };
 
         // todo list에 추가하고 저장
@@ -52,7 +52,7 @@ public class InputFormObjectController : MonoBehaviour
         StorageManager.Save(todoList);
 
         // todo list 추가
-        taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, todoItem.Text, todoItem.DueDate, todoItem.IsPriority);
+        taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, todoItem);
 
         // text 필드 다시 초기화
         inputField.text = null;
