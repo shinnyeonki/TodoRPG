@@ -52,7 +52,7 @@ public class InputFormObjectController : MonoBehaviour
         StorageManager.Save(todoList);
 
         // todo list 추가
-        taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, todoItem.Text, todoItem.DueDate, todoItem.IsPriority);
+        taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, todoItem);
 
         // text 필드 다시 초기화
         inputField.text = null;
