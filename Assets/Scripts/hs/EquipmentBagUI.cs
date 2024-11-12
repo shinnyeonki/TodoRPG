@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; // TextMeshPro 사용 추가
 
 public class EquipmentBagUI : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class EquipmentBagUI : MonoBehaviour
 
     void Start()
     {
-        // 장비 가방의 UI 초기화
         UpdateEquipmentUI();
     }
 
@@ -30,29 +30,31 @@ public class EquipmentBagUI : MonoBehaviour
         }
 
         // 획득한 장비 목록을 반복하여 UI에 표시
-        foreach (var equipment in equipmentBag.acquiredItems)
+        foreach (Item item in equipmentBag.acquiredItems)
         {
+            // 새로운 패널 생성
             GameObject panel = Instantiate(equipmentPanelPrefab, contentParent);
 
-            // 장비 이미지 설정
-            Image equipmentImage = panel.transform.Find("EquipmentImage")?.GetComponent<Image>();
-            if (equipmentImage != null)
+            // 패널 내의 이미지 설정
+            Image itemImage = panel.transform.Find("ItemImage")?.GetComponent<Image>();
+            if (itemImage != null && item.itemImage != null)
             {
-                equipmentImage.sprite = equipment.itemImage;
+                itemImage.sprite = item.itemImage;
+            }
+            else
+            {
+                Debug.LogWarning($"Item image is missing for {item.itemName}");
             }
 
-            // 장비 이름 텍스트 설정
-            Text equipmentNameText = panel.transform.Find("EquipmentName")?.GetComponent<Text>();
-            if (equipmentNameText != null)
+            // 패널 내의 아이템 이름 텍스트 설정 (TextMeshProUGUI)
+            TextMeshProUGUI itemNameText = panel.transform.Find("ItemName")?.GetComponent<TextMeshProUGUI>();
+            if (itemNameText != null)
             {
-                equipmentNameText.text = equipment.itemName;
+                itemNameText.text = item.itemName;
             }
-
-            // 획득 상태 텍스트 설정
-            Text acquiredStatusText = panel.transform.Find("AcquiredStatus")?.GetComponent<Text>();
-            if (acquiredStatusText != null)
+            else
             {
-                acquiredStatusText.text = "획득";
+                Debug.LogWarning("ItemName Text component is missing in equipmentPanelPrefab.");
             }
         }
     }
