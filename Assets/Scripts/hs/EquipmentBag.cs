@@ -19,6 +19,16 @@ public class EquipmentBag : MonoBehaviour
             {
                 equipmentBagUI.UpdateEquipmentUI();
             }
+
+            // GameManager에 아이템 추가
+            if (GameManager.gm != null)
+            {
+                GameManager.gm.AddAcquiredItem(newItem.itemName); // 아이템 이름 전달
+            }
+            else
+            {
+                Debug.LogWarning("GameManager 인스턴스를 찾을 수 없습니다.");
+            }
         }
     }
 }
