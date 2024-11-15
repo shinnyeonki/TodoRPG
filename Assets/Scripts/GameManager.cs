@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // gm 인스턴스 저장
-    public Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
+    public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
 
     // 싱글톤 패턴을 위한 인스턴스 체크
     void Awake()
@@ -47,6 +47,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("큐가 비어 있습니다.");
         }
+    }
+
+    //큐가 비어있는지 체크 하는 메서드
+    public bool IsTodoDoneClear()
+    {
+        return !(todoDone.Count > 0);
     }
     
 
