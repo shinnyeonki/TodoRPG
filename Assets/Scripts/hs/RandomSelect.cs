@@ -12,10 +12,10 @@ public class RandomSelect : MonoBehaviour
     private GameObject currentPanel; // 현재 패널
     private Button confirmButton; // 확인 버튼
     public EquipmentBag equipmentBag; // EquipmentBag 스크립트 참조
+    public int coinCost = 10; // 뽑기 시 필요한 코인 수
 
     void Start()
     {
-        // total 가중치 합 계산
         foreach (Item item in items)
         {
             total += item.weight;
@@ -30,42 +30,44 @@ public class RandomSelect : MonoBehaviour
 
     public void ShowItemResult()
     {
-        Item selectedItem = RandomItem();
-        result.Add(selectedItem);
-
-        // 장비 가방에 추가
-        if (equipmentBag != null)
+        // 코인이 충분한지 확인
+        if (GameManager.gm != null && GameManager.gm.SpendCoin(coinCost))
         {
-            equipmentBag.AcquireItem(selectedItem);
-        }
+            Item selectedItem = RandomItem();
+            result.Add(selectedItem);
 
-        // 이전 패널 제거
-        if (currentPanel != null)
+            if (equipmentBag != null)
+            {
+                equipmentBag.AcquireItem(selectedItem);
+            }
+
+            if (currentPanel != null)
+            {
+                Destroy(currentPanel);
+            }
+
+            currentPanel = Instantiate(itemPanelPrefab, panelParent);
+
+            Image itemImage = currentPanel.transform.Find("ItemImage")?.GetComponent<Image>();
+            if (itemImage != null && selectedItem != null)
+            {
+                itemImage.sprite = selectedItem.itemImage;
+            }
+
+            confirmButton = currentPanel.transform.Find("Button")?.GetComponent<Button>();
+            if (confirmButton != null)
+            {
+                confirmButton.onClick.AddListener(() => OnConfirmButtonClick(currentPanel));
+            }
+
+            currentPanel.SetActive(true);
+        }
+        else
         {
-            Destroy(currentPanel);
+            Debug.LogWarning("코인이 부족하여 뽑기를 진행할 수 없습니다.");
         }
-
-        // 패널 생성
-        currentPanel = Instantiate(itemPanelPrefab, panelParent);
-
-        // 패널에 아이템 정보 적용
-        Image itemImage = currentPanel.transform.Find("ItemImage")?.GetComponent<Image>();
-        if (itemImage != null && selectedItem != null)
-        {
-            itemImage.sprite = selectedItem.itemImage; // 이미지 할당
-        }
-
-        // 버튼 찾기
-        confirmButton = currentPanel.transform.Find("Button")?.GetComponent<Button>();
-        if (confirmButton != null)
-        {
-            confirmButton.onClick.AddListener(() => OnConfirmButtonClick(currentPanel));
-        }
-
-        currentPanel.SetActive(true);
     }
 
-    // 확인 버튼 클릭 시 호출되는 메서드
     private void OnConfirmButtonClick(GameObject panel)
     {
         if (panel != null)
