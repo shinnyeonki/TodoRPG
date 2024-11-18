@@ -28,12 +28,17 @@ public class BaseScene : MonoBehaviour
             player.BattlePosition();
             CreateMonster();
         }
+        else
+        {
+            player.DefaultPosition();
+        }
     }
 
     void CreateMonster() //몬스터 생성
     {
-        int random = Random.Range(0, monsterList.Count-1);
-        Vector3 pos = new Vector3(1, -0.75f, 0);
+        int random = Random.Range(0, monsterList.Count);
+        Debug.Log(random);
+        Vector3 pos = new Vector3(1, -0.8f, 0);
 
         GameObject monster = monsterList[random];
         monster.transform.position = pos;
