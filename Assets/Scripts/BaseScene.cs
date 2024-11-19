@@ -40,7 +40,7 @@ public class BaseScene : MonoBehaviour
     {
         int random = Random.Range(0, monsterList.Count);
         Debug.Log(random);
-        Vector3 pos = new Vector3(1, -0.8f, 0);
+        Vector3 pos = new Vector3(1, -0.85f, 0);
 
         GameObject monster = monsterList[random];
         monster.transform.position = pos;
