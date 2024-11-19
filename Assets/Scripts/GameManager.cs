@@ -78,6 +78,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //큐가 비어있는지 체크 하는 메서드
+    public bool IsTodoDoneClear()
+    {
+        return !(todoDone.Count > 0);
+    }
+    
+
     // 큐에 있는 모든 Todo 완료 이벤트를 조회하는 메서드
     public void GetAllTodoDone()
     {
