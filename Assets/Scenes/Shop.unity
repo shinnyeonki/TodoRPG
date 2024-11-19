@@ -483,7 +483,6 @@ GameObject:
   m_Component:
   - component: {fileID: 360678416}
   - component: {fileID: 360678415}
-  - component: {fileID: 360678417}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -518,21 +517,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &360678417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 360678414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212ddf29140bf7248968f68d68ef82a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  acquiredItems: []
-  coin: 100
-  coinText: {fileID: 0}
 --- !u!1 &397345222
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,7 +705,6 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
-  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -816,7 +799,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 15.4
+  orthographic size: 9.425
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -847,30 +830,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519420033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ComponentVersion: 1
-  m_AssetsPPU: 20
-  m_RefResolutionX: 200
-  m_RefResolutionY: 150
-  m_CropFrame: 0
-  m_GridSnapping: 0
-  m_FilterMode: 0
-  m_UpscaleRT: 0
-  m_PixelSnapping: 0
-  m_CropFrameX: 0
-  m_CropFrameY: 0
-  m_StretchFill: 0
 --- !u!1 &536367614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,6 +2635,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1812013748}
+  - component: {fileID: 1812013749}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2698,6 +2658,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1812013749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812013747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 212ddf29140bf7248968f68d68ef82a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acquiredItems: []
+  coin: 100
+  coinText: {fileID: 0}
 --- !u!1 &1896542896
 GameObject:
   m_ObjectHideFlags: 0
