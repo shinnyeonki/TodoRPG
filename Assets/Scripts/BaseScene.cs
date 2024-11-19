@@ -16,20 +16,22 @@ public class BaseScene : MonoBehaviour
     void Start()
     {
         LoadMainScene();
-        InputMonsters();
     }
 
     public void LoadMainScene()
     {
+        gm.GetNextTodoDone();
         monsterList = new List<GameObject>();
         InputMonsters();
         if (!gm.IsTodoDoneClear())
         {
+            Debug.Log("battle position");
             player.BattlePosition();
             CreateMonster();
         }
         else
         {
+            Debug.Log("default position");
             player.DefaultPosition();
         }
     }

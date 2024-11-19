@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
-    public Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
+    public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
     public List<string> acquiredItems = new List<string>(); // 획득한 아이템 목록
     public int coin = 100; // 기본 코인 수
     public Text coinText; // 재화를 UI에 표시할 텍스트 컴포넌트
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         if (gm == null) gm = this;
-        else
+        else 
         {
             Debug.LogWarning("이미 GameManager 인스턴스가 존재합니다. 중복된 인스턴스를 제거합니다.");
             Destroy(gameObject);
