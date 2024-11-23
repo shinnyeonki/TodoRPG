@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
     public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
+    public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
     public List<string> acquiredItems = new List<string>(); // 획득한 아이템 목록
     public int coin = 100; // 기본 코인 수
     public Text coinText; // 재화를 UI에 표시할 텍스트 컴포넌트

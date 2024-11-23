@@ -440,7 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f97d7c0d9111a3419a37335901e7be1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: {fileID: 0}
 --- !u!4 &360678416
 Transform:
   m_ObjectHideFlags: 0
@@ -966,6 +965,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9043920546160527475, guid: a4b4a6d32bcb19248a754d6602ffc7e4, type: 3}
+      propertyPath: m_player
+      value: 
+      objectReference: {fileID: 1087279239}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1230,6 +1233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e96954c88e90984aa1162a27df8d257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_scene: {fileID: 2017773329}
 --- !u!1 &1267636998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1819,9 +1823,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e98752fef71b3d4da3386fb8d3a8bf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 1812013749}
   player: {fileID: 1087279239}
-  monster: {fileID: 6340317656686545967, guid: f4497b151bf178843b2c49a8210463e5, type: 3}
+  monsterList: []
+  monster: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
