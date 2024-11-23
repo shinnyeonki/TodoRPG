@@ -21,17 +21,17 @@ public class BaseScene : MonoBehaviour
     {
         InputMonsterPrefabs();
         InputMonsters();
-        SpawnMonsters();
-        //gm.GetNextTodoDone(); TODO 이후 어택 방식에서 삭제로 변경 
-    }
-    void SpawnMonsters() //몬스터 생성
-    {
         if (GameManager.gm.IsTodoDoneClear()) 
         {
             Debug.Log("default position");
             player.DefaultPosition();
             return;
         }
+        SpawnMonsters();
+        //gm.GetNextTodoDone(); TODO 이후 어택 방식에서 삭제로 변경 
+    }
+    public void SpawnMonsters() //몬스터 생성
+    {
         Debug.Log("battle position");
         player.BattlePosition();
                
@@ -39,6 +39,7 @@ public class BaseScene : MonoBehaviour
         monster = Instantiate(GameManager.monsters.First());
         monster.transform.position = pos;
     }
+
 
     void InputMonsterPrefabs() //몬스터 리스트 생성
     {
@@ -59,9 +60,9 @@ public class BaseScene : MonoBehaviour
             return;
         
         // 몬스터 큐에 몬스터 랜덤으로 추가
-        int random = Random.Range(0, monsterList.Count);
         for(int i=GameManager.monsters.Count; i <GameManager.todoDone.Count+1; i++)
         {
+            int random = Random.Range(0, monsterList.Count);
             GameManager.monsters.Enqueue(monsterList[random]);
             Debug.Log("몬스터 추가 : "+random);
         }

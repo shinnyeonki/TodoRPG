@@ -21,8 +21,18 @@ public class PlayerController : MonoBehaviour
             Debug.Log("not spawn monster");
             return; 
         }
+
         Destroy(m_scene.monster);
+        m_scene.monster = null;
+
+        if(GameManager.monsters.Count==0 || GameManager.todoDone.Count==0)
+        {
+            Debug.Log("monster queue clear");
+            return;
+        }
         GameManager.monsters.Dequeue();
         GameManager.todoDone.Dequeue();
+
+        m_scene.SpawnMonsters();
     }
 }
