@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
     private int coins = 100; // 초기 코인 값
+    public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
+    public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
 
-    public Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
     public List<string> acquiredItems = new List<string>(); // 획득한 아이템 목록
 
     // 코인 값 변경 이벤트
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         if (gm == null) gm = this;
-        else
+        else 
         {
             Debug.LogWarning("이미 GameManager 인스턴스가 존재합니다. 중복된 인스턴스를 제거합니다.");
             Destroy(gameObject);
@@ -93,6 +94,13 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("큐가 비어 있습니다.");
         }
     }
+
+    //큐가 비어있는지 체크 하는 메서드
+    public bool IsTodoDoneClear()
+    {
+        return !(todoDone.Count > 0);
+    }
+    
 
     // 큐에 있는 모든 Todo 완료 이벤트를 조회하는 메서드
     public void GetAllTodoDone()
