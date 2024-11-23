@@ -8,6 +8,8 @@ public class HeroKnight : MonoBehaviour {
     //[SerializeField] float      m_jumpForce = 7.5f;
     //[SerializeField] float      m_rollForce = 6.0f;
     //[SerializeField] bool       m_noBlood = false;
+    public PlayerController m_player;
+
     [SerializeField] GameObject m_slideDust;
 
     private Animator            m_animator;
@@ -112,9 +114,11 @@ public class HeroKnight : MonoBehaviour {
         {
             m_currentAttack++;
 
+
             // Loop back to one after third attack
             if (m_currentAttack > 3)
                 m_currentAttack = 1;
+
 
             // Reset Attack combo if time since last attack is too large
             if (m_timeSinceAttack > 1.0f)
@@ -122,6 +126,8 @@ public class HeroKnight : MonoBehaviour {
 
             // Call one of three attack animations "Attack1", "Attack2", "Attack3"
             m_animator.SetTrigger("Attack" + m_currentAttack);
+            if (m_currentAttack == 3)
+                m_player.KillMonster();
 
             // Reset timer
             m_timeSinceAttack = 0.0f;
