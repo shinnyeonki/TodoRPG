@@ -33,27 +33,36 @@ public class RandomSelect : MonoBehaviour
         // 코인이 충분한지 확인
         if (GameManager.gm != null && GameManager.gm.SpendCoin(coinCost))
         {
+            // 코인 차감 후 UI 업데이트
+            UpdateCoinTextUI();
+
+            // 랜덤 아이템 생성
             Item selectedItem = RandomItem();
             result.Add(selectedItem);
 
+            // 장비 가방에 아이템 추가
             if (equipmentBag != null)
             {
                 equipmentBag.AcquireItem(selectedItem);
             }
 
+            // 기존 패널 제거
             if (currentPanel != null)
             {
                 Destroy(currentPanel);
             }
 
+            // 새 패널 생성
             currentPanel = Instantiate(itemPanelPrefab, panelParent);
 
+            // 패널에 아이템 정보 적용
             Image itemImage = currentPanel.transform.Find("ItemImage")?.GetComponent<Image>();
             if (itemImage != null && selectedItem != null)
             {
                 itemImage.sprite = selectedItem.itemImage;
             }
 
+            // 버튼 연결
             confirmButton = currentPanel.transform.Find("Button")?.GetComponent<Button>();
             if (confirmButton != null)
             {
@@ -91,4 +100,14 @@ public class RandomSelect : MonoBehaviour
         }
         return null;
     }
+
+    // 코인 UI 업데이트 메서드
+  private void UpdateCoinTextUI()
+{
+    if (GameManager.gm != null)
+    {
+        Debug.Log($"현재 남은 코인: {GameManager.gm.GetCoins()}");
+        // GameManager의 GetCoins()를 사용해 현재 상태 확인 (UI는 이벤트로 처리)
+    }
+}
 }

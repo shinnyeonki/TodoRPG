@@ -1,17 +1,19 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
+    private int coins = 100; // 초기 코인 값
     public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
     public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
+
     public List<string> acquiredItems = new List<string>(); // 획득한 아이템 목록
-    public int coin = 100; // 기본 코인 수
-    public Text coinText; // 재화를 UI에 표시할 텍스트 컴포넌트
+
+    // 코인 값 변경 이벤트
+    public event Action<int> OnCoinsUpdated;
 
     void Awake()
     {
@@ -25,40 +27,54 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        UpdateCoinUI();
+        // 시작 시 코인 값 변경 이벤트 호출
+        OnCoinsUpdated?.Invoke(coins);
+    }
+
+    // 코인 추가 메서드
+    public void AddCoins(int amount)
+    {
+        coins += amount;
+        OnCoinsUpdated?.Invoke(coins); // 이벤트 발행
     }
 
     // 코인 차감 메서드 (아이템 뽑기 시 사용)
     public bool SpendCoin(int amount)
+{
+    if (coins >= amount)
     {
-        if (coin >= amount)
+        coins -= amount;
+
+        if (OnCoinsUpdated != null)
         {
-            coin -= amount;
-            UpdateCoinUI();
-            Debug.Log("뽑기 후 남은 코인: " + coin);
-            return true;
+            Debug.Log("OnCoinsUpdated 이벤트 호출됨");
+            OnCoinsUpdated.Invoke(coins);
         }
-        Debug.LogWarning("코인이 부족합니다! 현재 코인: " + coin);
-        return false;
+        else
+        {
+            Debug.LogWarning("OnCoinsUpdated에 연결된 이벤트가 없습니다.");
+        }
+
+        return true;
+    }
+    Debug.LogWarning("코인이 부족합니다! 현재 코인: " + coins);
+    return false;
+}
+
+    // 현재 코인 값 반환 메서드
+    public int GetCoins()
+    {
+        return coins;
     }
 
-    // 재화 UI 업데이트 메서드
-    public void UpdateCoinUI()
-    {
-        if (coinText != null)
-        {
-            coinText.text = "코인: " + coin;
-        }
-    }
-
-    // Todo 완료 이벤트를 추가하는 메서드 (다른 팀원이 사용하는 기능)
+    // Todo 완료 이벤트를 추가하는 메서드
     public void AddTodoDone(string todoKey)
     {
         todoDone.Enqueue(todoKey);
         Debug.Log("Todo 완료 이벤트가 추가되었습니다: " + todoKey);
     }
 
-    // 새로운 획득 아이템을 추가하는 메서드 (EquipmentBag과 연동)
+    // 새로운 획득 아이템을 추가하는 메서드
     public void AddAcquiredItem(string itemName)
     {
         acquiredItems.Add(itemName); // 획득한 아이템 리스트에 추가
