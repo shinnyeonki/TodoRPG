@@ -17,22 +17,18 @@ public class PlayerController : MonoBehaviour
     public void KillMonster()
     {
         if(m_scene.monster == null)
-        {
-            Debug.Log("not spawn monster");
-            return; 
-        }
+            return;
+        if(GameManager.monsters.Count==0)
+            return;
+     
 
         Destroy(m_scene.monster);
         m_scene.monster = null;
 
-        if(GameManager.monsters.Count==0 || GameManager.todoDone.Count==0)
-        {
-            Debug.Log("monster queue clear");
-            return;
-        }
         GameManager.monsters.Dequeue();
         GameManager.todoDone.Dequeue();
 
-        m_scene.SpawnMonsters();
+        if(GameManager.monsters.Count > 0)
+            m_scene.SpawnMonsters();
     }
 }

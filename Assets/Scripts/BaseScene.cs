@@ -60,7 +60,7 @@ public class BaseScene : MonoBehaviour
             return;
         
         // 몬스터 큐에 몬스터 랜덤으로 추가
-        for(int i=GameManager.monsters.Count; i <GameManager.todoDone.Count+1; i++)
+        for(int i=GameManager.monsters.Count; i <GameManager.todoDone.Count; i++)
         {
             int random = Random.Range(0, monsterList.Count);
             GameManager.monsters.Enqueue(monsterList[random]);
