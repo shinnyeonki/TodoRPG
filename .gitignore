@@ -77,3 +77,7 @@ crashlytics-build.properties
 
 # unity version control
 .plastic
+Assets/Plugins/iOS/Firebase/libFirebaseCppApp.a
+Assets/Plugins/iOS/Firebase/libFirebaseCppAuth.a
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_3_0.so
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_3_0.bundle
