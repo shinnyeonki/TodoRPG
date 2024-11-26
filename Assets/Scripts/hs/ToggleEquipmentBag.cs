@@ -2,15 +2,49 @@ using UnityEngine;
 
 public class ToggleEquipmentBag : MonoBehaviour
 {
-    public GameObject equipmentBagPanel; // EquipmentBagPanel 오브젝트
+    [Header("UI Settings")]
+    public GameObject equipmentBagPanel; // 가방 패널 오브젝트
+    public bool startClosed = true; // UI 시작 상태
 
-    // 가방 열기/닫기 함수
+    [Header("Box Settings")]
+    public GameObject box; // Box 오브젝트
+    private Collider2D boxCollider; // Box의 BoxCollider2D
+
+    void Start()
+    {
+        // Box Collider2D 자동 검색
+        if (box != null)
+        {
+            boxCollider = box.GetComponent<Collider2D>();
+        }
+
+        // 초기 상태 설정
+        if (equipmentBagPanel != null)
+        {
+            equipmentBagPanel.SetActive(!startClosed);
+        }
+
+        // Box Collider 초기 상태 설정
+        SetBoxColliderEnabled(startClosed);
+    }
+
     public void ToggleBag()
     {
         if (equipmentBagPanel != null)
         {
-            // 현재 활성화 상태를 반전시킴
-            equipmentBagPanel.SetActive(!equipmentBagPanel.activeSelf);
+            bool isActive = equipmentBagPanel.activeSelf;
+            equipmentBagPanel.SetActive(!isActive);
+
+            // Box Collider 활성화/비활성화
+            SetBoxColliderEnabled(isActive);
+        }
+    }
+
+    private void SetBoxColliderEnabled(bool isEnabled)
+    {
+        if (boxCollider != null)
+        {
+            boxCollider.enabled = isEnabled; // Collider 활성화/비활성화
         }
     }
 }
