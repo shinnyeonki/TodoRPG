@@ -26,30 +26,13 @@ public class FriendManager : MonoBehaviour
     }
 
 
-    /*public void AddFriend()
-    {
-        Debug.Log("AddFriend function called."); // AddFriend 함수 호출 확인
-
-        string email = FriendEmailInputField.text;
-
-        if (string.IsNullOrEmpty(email))
-        {
-            Debug.Log("Email is empty. Please enter an email.");
-            return;
-        }
-
-        Debug.Log($"Adding friend with email: {email}");
-
-        // 친구 추가 처리
-        GameObject newFriend = Instantiate(FriendItemPrefab, UnifiedListContainer);
-        newFriend.GetComponent<FriendItem>().Setup(email, 0);
-
-        Debug.Log($"Friend added: {email}");
-    }*/
 
     public void AddFriend()
     {
         string email = FriendEmailInputField.text;
+
+        //Instantiate(FriendItemPrefab, UnifiedListContainer);
+
 
         if (string.IsNullOrEmpty(email))
         {
@@ -57,16 +40,30 @@ public class FriendManager : MonoBehaviour
             return;
         }
 
-        // 새로운 친구 Prefab 생성
+        // Prefab 생성
         GameObject newFriend = Instantiate(FriendItemPrefab, UnifiedListContainer);
-        newFriend.GetComponent<FriendItem>().Setup(email, 0);
 
-        // RectTransform 조정 (필요하면)
+        // RectTransform은 Vertical Layout Group이 관리하므로 위치를 조정하지 않음
         RectTransform rectTransform = newFriend.GetComponent<RectTransform>();
         rectTransform.localScale = Vector3.one; // 스케일 초기화
-        rectTransform.anchoredPosition3D = Vector3.zero; // 위치 초기화
 
-        Debug.Log($"Friend added: {email}");
+        // FriendItem 데이터 설정
+        var friendItem = newFriend.GetComponent<FriendItem>();
+        if (friendItem != null)
+        {
+            friendItem.Setup(email, 0); // 이메일과 초기 점수 설정
+            Debug.Log($"Added Friend: {email}");
+        }
+        else
+        {
+            Debug.LogError("FriendItem component is missing!");
+        }
+
+        if (UnifiedListContainer == null)
+        {
+            Debug.LogError("UnifiedListContainer is not assigned!");
+        }
+
     }
 
 
@@ -82,6 +79,7 @@ public class FriendManager : MonoBehaviour
         UpdateFriendListUI();
     }
 
+
     private void UpdateFriendListUI()
     {
         // 기존 UI 클리어
@@ -90,12 +88,15 @@ public class FriendManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // 친구 목록 다시 생성
+        // 정렬된 친구 목록으로 UI 다시 생성
         foreach (Friend friend in friendList)
         {
             GameObject item = Instantiate(FriendItemPrefab, UnifiedListContent);
-            FriendItem itemScript = item.GetComponent<FriendItem>();
-            itemScript.Setup(friend.Email, friend.Score);
+            var itemScript = item.GetComponent<FriendItem>();
+            if (itemScript != null)
+            {
+                itemScript.Setup(friend.Email, friend.Score);
+            }
         }
     }
 }
