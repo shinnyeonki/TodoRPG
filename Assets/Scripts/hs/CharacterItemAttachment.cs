@@ -15,27 +15,30 @@ public class CharacterItemAttachment : MonoBehaviour
             Destroy(currentItemObject);
         }
 
-        // 새 아이템 생성
-        if (item != null)
+        // 새 아이템 생성 및 장착
+        if (item != null && item.itemImage != null)
         {
-            GameObject newItemObject = new GameObject(item.itemName);
+            GameObject newItemObject = new GameObject(item.itemName); // 아이템 이름을 가진 새 오브젝트 생성
             SpriteRenderer spriteRenderer = newItemObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = item.itemImage;
+            spriteRenderer.sprite = item.itemImage; // 아이템 이미지 설정
 
-            // 위치 및 크기 설정
+            // 위치 및 크기 조정
             newItemObject.transform.position = characterHead.position;
-            newItemObject.transform.localScale = new Vector3(0.5f, 0.5f, 1f); // 크기 조절
+            newItemObject.transform.localScale = new Vector3(0.5f, 0.5f, 1f); // 크기 조정
 
-            // 부모 설정 (캐릭터와 함께 움직이도록)
+            // 부모 설정
             newItemObject.transform.SetParent(characterHead);
 
             // 현재 장착 아이템 업데이트
             currentItemObject = newItemObject;
-            currentItem = item;
-
-            Debug.Log($"{item.itemName} 아이템이 장착되었습니다.");
+            Debug.Log($"{item.itemName}이 장착되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("유효하지 않은 아이템이거나 이미지가 없습니다.");
         }
     }
+
 
     // 아이템 해제 메서드
     public void UnequipItem()

@@ -13,6 +13,10 @@ public class EquipmentBagUI : MonoBehaviour
     void Start()
     {
         UpdateEquipmentUI();
+        if (itemOptionsPopup != null)
+        {
+            itemOptionsPopup.SetActive(false); // 초기 상태에서 비활성화
+        }
     }
 
     public void UpdateEquipmentUI()
