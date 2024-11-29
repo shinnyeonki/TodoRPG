@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class EquipmentBagUI : MonoBehaviour
 {
-    public EquipmentBag equipmentBag; // EquipmentBag 스크립트 참조
     public GameObject equipmentPanelPrefab; // 장비 패널 프리팹
     public Transform contentParent; // 스크롤 뷰의 Content
     public GameObject itemOptionsPopup; // 아이템 옵션 팝업 (장착/해제 버튼 포함)
@@ -16,15 +15,18 @@ public class EquipmentBagUI : MonoBehaviour
         UpdateEquipmentUI();
     }
 
-    // 장비 UI 업데이트 메서드
     public void UpdateEquipmentUI()
     {
+        if (GameManager.gm == null) return;
+
+        // 기존 패널 제거
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (Item item in equipmentBag.acquiredItems)
+        // GameManager의 acquiredItems 사용
+        foreach (Item item in GameManager.gm.acquiredItems)
         {
             GameObject panel = Instantiate(equipmentPanelPrefab, contentParent);
 
@@ -43,14 +45,12 @@ public class EquipmentBagUI : MonoBehaviour
         }
     }
 
-    // 아이템 클릭 시 호출
     public void OnItemClick(Item item)
     {
         selectedItem = item; // 현재 선택된 아이템 설정
         itemOptionsPopup.SetActive(true); // 팝업 활성화
     }
 
-    // 장착 버튼 클릭 시 호출
     public void OnEquipButtonClick()
     {
         if (selectedItem != null && characterAttachment != null)
@@ -60,7 +60,6 @@ public class EquipmentBagUI : MonoBehaviour
         itemOptionsPopup.SetActive(false); // 팝업 비활성화
     }
 
-    // 해제 버튼 클릭 시 호출
     public void OnUnequipButtonClick()
     {
         if (characterAttachment != null)
