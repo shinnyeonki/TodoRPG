@@ -14,13 +14,16 @@ public class CharacterItemAttachment : MonoBehaviour
             Debug.Log("기존 장착 아이템 제거됨.");
         }
 
-        // 새 아이템 생성
         GameObject itemObject = new GameObject(item.itemName);
         SpriteRenderer renderer = itemObject.AddComponent<SpriteRenderer>();
         renderer.sprite = item.itemImage;
 
-        // 아이템 크기 조정
-        float desiredSize = 0.5f; // 원하는 크기 (기본 크기의 50%)
+        // Collider 추가 및 Trigger 설정
+        BoxCollider2D collider = itemObject.AddComponent<BoxCollider2D>();
+        collider.isTrigger = true;
+
+        // 크기 조정
+        float desiredSize = 0.5f; // 크기를 1로 설정 (원본 크기 유지)
         Vector2 spriteSize = renderer.sprite.bounds.size;
         itemObject.transform.localScale = new Vector3(
             desiredSize / spriteSize.x,
@@ -28,13 +31,15 @@ public class CharacterItemAttachment : MonoBehaviour
             1
         );
 
-        // 캐릭터 머리 위로 배치
+        // 캐릭터 머리 위에 배치
         itemObject.transform.SetParent(transform);
-        itemObject.transform.localPosition = new Vector3(0, 1.5f, 0); // 머리 위 위치
-        renderer.sortingOrder = 10; // 캐릭터 앞에 렌더링
+        itemObject.transform.localPosition = new Vector3(0, 1.5f, 0); // 머리 위
+
+        // Sorting Order를 낮게 설정하여 패널 뒤로 이동
+        renderer.sortingOrder = -1; // 패널보다 뒤에 렌더링되도록 설정
 
         currentEquippedItem = itemObject;
-        Debug.Log($"아이템 장착됨: {item.itemName}, 크기: {itemObject.transform.localScale}");
+        Debug.Log($"아이템 장착됨: {item.itemName}, 크기: {itemObject.transform.localScale}, Sorting Order: {renderer.sortingOrder}");
     }
 
     public void UnequipItem()
