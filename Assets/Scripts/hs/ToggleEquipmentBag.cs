@@ -12,19 +12,22 @@ public class ToggleEquipmentBag : MonoBehaviour
 
     void Start()
     {
-        // Box Collider2D 자동 검색
         if (box != null)
         {
             boxCollider = box.GetComponent<Collider2D>();
         }
 
-        // 초기 상태 설정
         if (equipmentBagPanel != null)
         {
             equipmentBagPanel.SetActive(!startClosed);
+
+            var image = equipmentBagPanel.GetComponent<UnityEngine.UI.Image>();
+            if (image != null)
+            {
+                image.raycastTarget = false; // Raycast 차단 해제
+            }
         }
 
-        // Box Collider 초기 상태 설정
         SetBoxColliderEnabled(startClosed);
     }
 
@@ -34,8 +37,6 @@ public class ToggleEquipmentBag : MonoBehaviour
         {
             bool isActive = equipmentBagPanel.activeSelf;
             equipmentBagPanel.SetActive(!isActive);
-
-            // Box Collider 활성화/비활성화
             SetBoxColliderEnabled(isActive);
         }
     }
@@ -44,7 +45,7 @@ public class ToggleEquipmentBag : MonoBehaviour
     {
         if (boxCollider != null)
         {
-            boxCollider.enabled = isEnabled; // Collider 활성화/비활성화
+            boxCollider.enabled = isEnabled;
         }
     }
 }
