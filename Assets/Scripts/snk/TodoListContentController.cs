@@ -5,23 +5,48 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class TodoListContentController : MonoBehaviour
 {
+
+
     void Start()
     {
+        DisplayTodoList();
+    }
+
+    public void ChangeDisplayMode()
+    {
+        // 모든 자식 객체를 삭제
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
         DisplayTodoList();
     }
 
     public void DisplayTodoList()
     {
         // 여기서 반환되는 것 : Dictionary<string, StorageManager.TodoItem> string은 key, TodoItem은 value
-        var todoList = StorageManager.GetAll();
+        Dictionary<string, StorageManager.TodoItem> todoList = StorageManager.GetAll();
         Debug.Log("todolist initial count : " + todoList.Count);
         if (todoList == null)
         { // todo list 에 아무것도 없을 때는 그냥 return
             return;
         }
+
+
+        //여기서 DropDown 메뉴(OVERDUE, DUETODAY, DUETOMORROW, DUENEXTWEEK, DUENEXTMONTH)에 따라 정렬
+        //1. 컴포넌트를 가져와서 상태에 따라 switch문으로 각 상태에 맞게 옳지 않는 것은 제거해서 todoList 에 저장
+
+
+        string displayMode = FindObjectOfType<TMP_Dropdown>().captionText.text;
+        todoList = FilterTodoList(todoList, displayMode);
+
+
+
+
         // 우선순위와 기한에 따라 정렬
         var sortedTodoList = todoList
             .OrderBy(todo => todo.Value.IsPriority) // 우선순위 기준 오름차순 (false가 먼저)
@@ -96,4 +121,68 @@ public class TodoListContentController : MonoBehaviour
             sortedChildren[i].SetSiblingIndex(i);
         }
     }
+
+
+    public Dictionary<string, StorageManager.TodoItem> FilterTodoList(Dictionary<string, StorageManager.TodoItem> todoList, string displayMode)
+    {
+        DateTime now = DateTime.Now;
+        DateTime today = now.Date;
+        DateTime tomorrow = today.AddDays(1);
+        DateTime nextWeek = today.AddDays(7);
+        DateTime nextMonth = today.AddMonths(1);
+
+        Dictionary<string, StorageManager.TodoItem> filteredTodoList = new Dictionary<string, StorageManager.TodoItem>();
+
+        foreach (var todo in todoList)
+        {
+            bool addTodo = false;
+            DateTime dueDate = todo.Value.DueDate.Date; // 시간 부분을 무시하고 날짜 부분만 사용
+
+            switch (displayMode)
+            {
+                case "OVER":
+                    if (dueDate < today)
+                    {
+                        addTodo = true;
+                    }
+                    break;
+                case "TODAY":
+                    if (dueDate == today)
+                    {
+                        addTodo = true;
+                    }
+                    break;
+                case "TOMORROW":
+                    if (dueDate == tomorrow)
+                    {
+                        addTodo = true;
+                    }
+                    break;
+                case "WEEK":
+                    if (dueDate > tomorrow && dueDate <= nextWeek)
+                    {
+                        addTodo = true;
+                    }
+                    break;
+                case "MONTH":
+                    if (dueDate > nextWeek && dueDate <= nextMonth)
+                    {
+                        addTodo = true;
+                    }
+                    break;
+                default:
+                    addTodo = true;
+                    break;
+            }
+
+            if (addTodo)
+            {
+                filteredTodoList.Add(todo.Key, todo.Value);
+            }
+        }
+
+        return filteredTodoList;
+    }
+
+
 }
