@@ -50,7 +50,7 @@ public class CoinUI : MonoBehaviour
 
         if (coinText != null)
         {
-            coinText.text = $"{coins}";
+            coinText.text = $"coin: {coins}";
         }
         else
         {
