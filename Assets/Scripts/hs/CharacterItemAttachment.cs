@@ -2,54 +2,55 @@ using UnityEngine;
 
 public class CharacterItemAttachment : MonoBehaviour
 {
-    public Transform characterHead; // 캐릭터 머리 위 위치
-    private GameObject currentItemObject; // 현재 장착된 아이템 오브젝트
-    private Item currentItem; // 현재 장착된 Item 객체
+    private GameObject currentEquippedItem; // 현재 장착된 아이템
 
-    // 아이템 장착 메서드
     public void EquipItem(Item item)
     {
-        // 기존 아이템 제거
-        if (currentItemObject != null)
+        Debug.Log($"EquipItem 호출됨: {item.itemName}");
+
+        if (currentEquippedItem != null)
         {
-            Destroy(currentItemObject);
+            Destroy(currentEquippedItem);
+            Debug.Log("기존 장착 아이템 제거됨.");
         }
 
-        // 새 아이템 생성
-        if (item != null)
-        {
-            GameObject newItemObject = new GameObject(item.itemName);
-            SpriteRenderer spriteRenderer = newItemObject.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = item.itemImage;
+        GameObject itemObject = new GameObject(item.itemName);
+        SpriteRenderer renderer = itemObject.AddComponent<SpriteRenderer>();
+        renderer.sprite = item.itemImage;
 
-            // 위치 및 크기 설정
-            newItemObject.transform.position = characterHead.position;
-            newItemObject.transform.localScale = new Vector3(0.5f, 0.5f, 1f); // 크기 조절
+        // Collider 추가 및 Trigger 설정
+        BoxCollider2D collider = itemObject.AddComponent<BoxCollider2D>();
+        collider.isTrigger = true;
 
-            // 부모 설정 (캐릭터와 함께 움직이도록)
-            newItemObject.transform.SetParent(characterHead);
+        // 크기 조정
+        float desiredSize = 0.5f; // 크기를 1로 설정 (원본 크기 유지)
+        Vector2 spriteSize = renderer.sprite.bounds.size;
+        itemObject.transform.localScale = new Vector3(
+            desiredSize / spriteSize.x,
+            desiredSize / spriteSize.y,
+            1
+        );
 
-            // 현재 장착 아이템 업데이트
-            currentItemObject = newItemObject;
-            currentItem = item;
+        // 캐릭터 머리 위에 배치
+        itemObject.transform.SetParent(transform);
+        itemObject.transform.localPosition = new Vector3(0, 1.5f, 0); // 머리 위
 
-            Debug.Log($"{item.itemName} 아이템이 장착되었습니다.");
-        }
+        // Sorting Order를 낮게 설정하여 패널 뒤로 이동
+        renderer.sortingOrder = -1; // 패널보다 뒤에 렌더링되도록 설정
+
+        currentEquippedItem = itemObject;
+        Debug.Log($"아이템 장착됨: {item.itemName}, 크기: {itemObject.transform.localScale}, Sorting Order: {renderer.sortingOrder}");
     }
 
-    // 아이템 해제 메서드
     public void UnequipItem()
     {
-        if (currentItemObject != null)
+        Debug.Log("UnequipItem 호출됨.");
+
+        if (currentEquippedItem != null)
         {
-            Destroy(currentItemObject);
-            Debug.Log($"{currentItem.itemName} 아이템이 해제되었습니다.");
-            currentItem = null;
-            currentItemObject = null;
-        }
-        else
-        {
-            Debug.LogWarning("장착된 아이템이 없습니다.");
+            Destroy(currentEquippedItem);
+            currentEquippedItem = null;
+            Debug.Log("현재 장착 아이템 해제됨.");
         }
     }
 }
