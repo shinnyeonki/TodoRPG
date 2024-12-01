@@ -23,7 +23,7 @@ public class EquipmentBag : MonoBehaviour
             // GameManager에 아이템 추가
             if (GameManager.gm != null)
             {
-                GameManager.gm.AddAcquiredItem(newItem);
+                GameManager.gm.AddAcquiredItem(newItem.itemName); // 아이템 이름 전달
             }
             else
             {
