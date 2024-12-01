@@ -10,22 +10,18 @@ public class GameManager : MonoBehaviour
     public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
     public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
 
-    public List<Item> acquiredItems = new List<Item>(); // 획득한 아이템 목록
+    public List<string> acquiredItems = new List<string>(); // 획득한 아이템 목록
 
     // 코인 값 변경 이벤트
     public event Action<int> OnCoinsUpdated;
 
     void Awake()
     {
-        if (gm == null)
-        {
-            gm = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시 GameManager 유지
-        }
-        else
+        if (gm == null) gm = this;
+        else 
         {
             Debug.LogWarning("이미 GameManager 인스턴스가 존재합니다. 중복된 인스턴스를 제거합니다.");
-            Destroy(gameObject); // 중복 인스턴스 제거
+            Destroy(gameObject);
         }
     }
 
@@ -33,15 +29,6 @@ public class GameManager : MonoBehaviour
     {
         // 시작 시 코인 값 변경 이벤트 호출
         OnCoinsUpdated?.Invoke(coins);
-    }
-
-    public void AddAcquiredItem(Item newItem)
-    {
-        if (!acquiredItems.Contains(newItem))
-        {
-            acquiredItems.Add(newItem);
-            Debug.Log($"{newItem.itemName}이(가) 획득 목록에 추가되었습니다.");
-        }
     }
 
     // 코인 추가 메서드
@@ -53,26 +40,26 @@ public class GameManager : MonoBehaviour
 
     // 코인 차감 메서드 (아이템 뽑기 시 사용)
     public bool SpendCoin(int amount)
+{
+    if (coins >= amount)
     {
-        if (coins >= amount)
+        coins -= amount;
+
+        if (OnCoinsUpdated != null)
         {
-            coins -= amount;
-
-            if (OnCoinsUpdated != null)
-            {
-                Debug.Log("OnCoinsUpdated 이벤트 호출됨");
-                OnCoinsUpdated.Invoke(coins);
-            }
-            else
-            {
-                Debug.LogWarning("OnCoinsUpdated에 연결된 이벤트가 없습니다.");
-            }
-
-            return true;
+            Debug.Log("OnCoinsUpdated 이벤트 호출됨");
+            OnCoinsUpdated.Invoke(coins);
         }
-        Debug.LogWarning("코인이 부족합니다! 현재 코인: " + coins);
-        return false;
+        else
+        {
+            Debug.LogWarning("OnCoinsUpdated에 연결된 이벤트가 없습니다.");
+        }
+
+        return true;
     }
+    Debug.LogWarning("코인이 부족합니다! 현재 코인: " + coins);
+    return false;
+}
 
     // 현재 코인 값 반환 메서드
     public int GetCoins()
@@ -90,7 +77,8 @@ public class GameManager : MonoBehaviour
     // 새로운 획득 아이템을 추가하는 메서드
     public void AddAcquiredItem(string itemName)
     {
-        Debug.LogWarning("이 메서드는 사용하지 않습니다. AddAcquiredItem(Item newItem)을 사용하세요.");
+        acquiredItems.Add(itemName); // 획득한 아이템 리스트에 추가
+        Debug.Log("아이템이 획득 목록에 추가되었습니다: " + itemName);
     }
 
     // 큐에서 다음 Todo 완료 이벤트를 가져오는 메서드
@@ -107,11 +95,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 큐가 비어있는지 체크 하는 메서드
+    //큐가 비어있는지 체크 하는 메서드
     public bool IsTodoDoneClear()
     {
         return !(todoDone.Count > 0);
     }
+    
 
     // 큐에 있는 모든 Todo 완료 이벤트를 조회하는 메서드
     public void GetAllTodoDone()
