@@ -24,14 +24,15 @@ public class PlayerController : MonoBehaviour
      
         Destroy(m_scene.monster);
         m_scene.monster = null;
+        GameManager.gm.AddCoins(10);
+        GameManager.gm.PlusScore(10);
+        GameManager.gm.GainHP(10);
+        Debug.Log(GameManager.gm.GetHp());
         StartCoroutine(NextMonster());
-
     }
 
     public IEnumerator NextMonster()
     {
-        GameManager.gm.AddCoins(10);
-        GameManager.gm.PlusScore(10);
         m_gainAlert.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         m_gainAlert.SetActive(false);
