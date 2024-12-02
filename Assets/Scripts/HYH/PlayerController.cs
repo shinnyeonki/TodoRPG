@@ -22,24 +22,24 @@ public class PlayerController : MonoBehaviour
         if(GameManager.monsters.Count==0)
             return;
      
-
         Destroy(m_scene.monster);
         m_scene.monster = null;
-        GainETC();
+        StartCoroutine(NextMonster());
 
+    }
+
+    public IEnumerator NextMonster()
+    {
+        GameManager.gm.AddCoins(10);
+        GameManager.gm.PlusScore(10);
+        m_gainAlert.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        m_gainAlert.SetActive(false);
+        
         GameManager.monsters.Dequeue();
         GameManager.todoDone.Dequeue();
 
         if(GameManager.monsters.Count > 0)
             m_scene.SpawnMonsters();
-    }
-
-    public void GainETC()
-    {
-        GameManager.gm.AddCoins(10);
-        GameManager.gm.PlusScore(10);
-        m_gainAlert.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        m_gainAlert.SetActive(false);
     }
 }
