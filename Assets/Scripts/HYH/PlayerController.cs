@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject m_gainAlert;
     public BaseScene m_scene;
     public void BattlePosition()
     {
@@ -23,15 +24,22 @@ public class PlayerController : MonoBehaviour
      
 
         Destroy(m_scene.monster);
-        GameManager.gm.AddCoins(10);
-        GameManager.gm.PlusScore(10);
-        Debug.Log("score : "+ GameManager.gm.GetScore());
         m_scene.monster = null;
+        GainETC();
 
         GameManager.monsters.Dequeue();
         GameManager.todoDone.Dequeue();
 
         if(GameManager.monsters.Count > 0)
             m_scene.SpawnMonsters();
+    }
+
+    public void GainETC()
+    {
+        GameManager.gm.AddCoins(10);
+        GameManager.gm.PlusScore(10);
+        m_gainAlert.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        m_gainAlert.SetActive(false);
     }
 }
