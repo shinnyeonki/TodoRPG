@@ -2,19 +2,43 @@ using UnityEngine;
 
 public class CharacterItemAttachment : MonoBehaviour
 {
-    private GameObject currentEquippedItem; // 현재 장착된 아이템
+    private GameObject currentEquippedItem;
 
     private void Start()
     {
-        // 씬 로드 시 장착 상태 복원
-        if (GameManager.gm.currentEquippedItem != null)
+        // 씬 로드 시 상태 복원
+        if (GameManager.gm != null && GameManager.gm.currentEquippedItem != null)
         {
-            EquipItem(GameManager.gm.currentEquippedItem);
+            if (GameManager.gm.currentEquippedItem.itemImage != null)
+            {
+                Debug.Log("장착된 아이템 복원 중...");
+                EquipItem(GameManager.gm.currentEquippedItem);
+            }
+            else
+            {
+                Debug.LogWarning("GameManager에 장착된 아이템의 이미지가 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.Log("GameManager에 복원할 장착된 아이템이 없습니다.");
         }
     }
 
     public void EquipItem(Item item)
     {
+        if (item == null)
+        {
+            Debug.LogError("EquipItem 호출 실패: 전달된 Item이 null입니다.");
+            return;
+        }
+
+        if (item.itemImage == null)
+        {
+            Debug.LogError("EquipItem 호출 실패: 아이템에 이미지가 설정되지 않았습니다.");
+            return;
+        }
+
         Debug.Log($"EquipItem 호출됨: {item.itemName}");
 
         if (currentEquippedItem != null)
@@ -32,7 +56,7 @@ public class CharacterItemAttachment : MonoBehaviour
         collider.isTrigger = true;
 
         // 크기 조정
-        float desiredSize = 0.5f; // 크기를 0.5로 설정
+        float desiredSize = 0.5f;
         Vector2 spriteSize = renderer.sprite.bounds.size;
         itemObject.transform.localScale = new Vector3(
             desiredSize / spriteSize.x,
@@ -47,7 +71,7 @@ public class CharacterItemAttachment : MonoBehaviour
 
         currentEquippedItem = itemObject;
 
-        // 현재 아이템 데이터를 GameManager에 저장
+        // GameManager에 저장
         GameManager.gm.currentEquippedItem = item;
 
         Debug.Log($"아이템 장착됨: {item.itemName}, 크기: {itemObject.transform.localScale}, Sorting Order: {renderer.sortingOrder}");
