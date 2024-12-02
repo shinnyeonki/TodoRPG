@@ -105,9 +105,9 @@ public class HeroKnight : MonoBehaviour {
         //     m_animator.SetTrigger("Death");
         // }
             
-        // //Hurt
-        // else if (Input.GetKeyDown("q") && !m_rolling)
-        //     m_animator.SetTrigger("Hurt");
+        //Hurt
+        else if (Input.GetKeyDown("q") && !m_rolling)
+            m_animator.SetTrigger("Hurt");
 
         //Attack
         else if(Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling && !EventSystem.current.IsPointerOverGameObject())
@@ -198,5 +198,10 @@ public class HeroKnight : MonoBehaviour {
             // Turn arrow in correct direction
             dust.transform.localScale = new Vector3(m_facingDirection, 1, 1);
         }
+    }
+
+    public void Hurt()
+    {
+        m_animator.SetTrigger("Hurt");
     }
 }
