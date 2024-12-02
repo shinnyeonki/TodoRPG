@@ -4,6 +4,15 @@ public class CharacterItemAttachment : MonoBehaviour
 {
     private GameObject currentEquippedItem; // 현재 장착된 아이템
 
+    private void Start()
+    {
+        // 씬 로드 시 장착 상태 복원
+        if (GameManager.gm.currentEquippedItem != null)
+        {
+            EquipItem(GameManager.gm.currentEquippedItem);
+        }
+    }
+
     public void EquipItem(Item item)
     {
         Debug.Log($"EquipItem 호출됨: {item.itemName}");
@@ -23,7 +32,7 @@ public class CharacterItemAttachment : MonoBehaviour
         collider.isTrigger = true;
 
         // 크기 조정
-        float desiredSize = 0.5f; // 크기를 1로 설정 (원본 크기 유지)
+        float desiredSize = 0.5f; // 크기를 0.5로 설정
         Vector2 spriteSize = renderer.sprite.bounds.size;
         itemObject.transform.localScale = new Vector3(
             desiredSize / spriteSize.x,
@@ -34,11 +43,13 @@ public class CharacterItemAttachment : MonoBehaviour
         // 캐릭터 머리 위에 배치
         itemObject.transform.SetParent(transform);
         itemObject.transform.localPosition = new Vector3(0, 1.5f, 0); // 머리 위
-
-        // Sorting Order를 낮게 설정하여 패널 뒤로 이동
         renderer.sortingOrder = -1; // 패널보다 뒤에 렌더링되도록 설정
 
         currentEquippedItem = itemObject;
+
+        // 현재 아이템 데이터를 GameManager에 저장
+        GameManager.gm.currentEquippedItem = item;
+
         Debug.Log($"아이템 장착됨: {item.itemName}, 크기: {itemObject.transform.localScale}, Sorting Order: {renderer.sortingOrder}");
     }
 
@@ -50,6 +61,7 @@ public class CharacterItemAttachment : MonoBehaviour
         {
             Destroy(currentEquippedItem);
             currentEquippedItem = null;
+            GameManager.gm.currentEquippedItem = null;
             Debug.Log("현재 장착 아이템 해제됨.");
         }
     }

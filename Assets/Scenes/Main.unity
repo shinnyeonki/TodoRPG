@@ -2590,6 +2590,10 @@ PrefabInstance:
       propertyPath: equipmentBagPanel
       value: 
       objectReference: {fileID: 172620010}
+    - target: {fileID: 7442851864745748698, guid: a69e4354414a4ed4aafccd37933687ee, type: 3}
+      propertyPath: m_text
+      value: bag
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

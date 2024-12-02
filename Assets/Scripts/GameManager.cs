@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
 
     public List<Item> acquiredItems = new List<Item>(); // 획득한 아이템 목록
+    public Item currentEquippedItem; // 현재 장착된 아이템
 
     // 코인 값 변경 이벤트
     public event Action<int> OnCoinsUpdated;
