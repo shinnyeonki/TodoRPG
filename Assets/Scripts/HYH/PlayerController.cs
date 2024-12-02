@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
         Destroy(m_scene.monster);
         GameManager.gm.AddCoins(10);
+        GameManager.gm.PlusScore(10);
+        Debug.Log("score : "+ GameManager.gm.GetScore());
         m_scene.monster = null;
 
         GameManager.monsters.Dequeue();

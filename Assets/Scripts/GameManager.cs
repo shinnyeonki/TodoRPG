@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
     private int coins = 100; // 초기 코인 값
-    public int score = 0; // 초기 점수
+    private int score = 0; // 초기 점수
     public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
     public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
 
@@ -52,6 +52,11 @@ public class GameManager : MonoBehaviour
         OnCoinsUpdated?.Invoke(coins); // 이벤트 발행
     }
 
+    public void PlusScore(int amount)
+    {
+        score += amount;
+    }
+
     // 코인 차감 메서드 (아이템 뽑기 시 사용)
     public bool SpendCoin(int amount)
     {
@@ -79,6 +84,11 @@ public class GameManager : MonoBehaviour
     public int GetCoins()
     {
         return coins;
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 
     // Todo 완료 이벤트를 추가하는 메서드
