@@ -23,6 +23,7 @@ public class HpController : MonoBehaviour
 
     public void DamageTest()
     {
+        Debug.Log("Damage Test");
         GameManager.gm.GainHP(-10);
         if (GameManager.gm.GetHp() <= 0)
         {

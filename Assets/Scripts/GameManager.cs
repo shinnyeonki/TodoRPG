@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     public void GainHP(int amount)
     {
-        if(hp < 100)
+        if(hp < 100 || amount < 0)
             hp += amount;
     }
 
