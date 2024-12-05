@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
             gm = this;
             DontDestroyOnLoad(gameObject); // 씬 전환 시 GameManager 유지
         }
-        else
+        else if (gm != this)
         {
             Debug.LogWarning("이미 GameManager 인스턴스가 존재합니다. 중복된 인스턴스를 제거합니다.");
             Destroy(gameObject); // 중복 인스턴스 제거
@@ -40,12 +40,24 @@ public class GameManager : MonoBehaviour
 
     public void AddAcquiredItem(Item newItem)
     {
-        if (!acquiredItems.Contains(newItem))
+        if (newItem == null)
+        {
+            Debug.LogError("AddAcquiredItem 호출 실패: 전달된 Item이 null입니다.");
+            return;
+        }
+
+        if (!acquiredItems.Exists(item => item.itemName == newItem.itemName))
         {
             acquiredItems.Add(newItem);
-            Debug.Log($"{newItem.itemName}이(가) 획득 목록에 추가되었습니다.");
+            Debug.Log($"{newItem.itemName}이(가) GameManager의 획득 목록에 추가되었습니다.");
+        }
+        else
+        {
+            Debug.Log($"{newItem.itemName}은(는) 이미 GameManager의 획득 목록에 있습니다.");
         }
     }
+
+
 
     // 코인 추가 메서드
     public void AddCoins(int amount)
@@ -61,7 +73,7 @@ public class GameManager : MonoBehaviour
 
     public void GainHP(int amount)
     {
-        if(hp < 100 || amount < 0)
+        if (hp < 100 || amount < 0)
             hp += amount;
     }
 
@@ -98,7 +110,7 @@ public class GameManager : MonoBehaviour
     {
         return score;
     }
-     
+
     public void SetScore(int num)
     {
         score = num;

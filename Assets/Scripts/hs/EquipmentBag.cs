@@ -1,34 +1,45 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class EquipmentBag : MonoBehaviour
 {
-    public List<Item> acquiredItems = new List<Item>();
+    public static EquipmentBag Instance; // 싱글톤 인스턴스
 
-    // 새로운 아이템 획득 메서드 (중복 체크)
+    public static event Action OnItemAcquired; // 아이템 획득 이벤트
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시 유지
+        }
+        else if (Instance != this)
+        {
+            Destroy(gameObject); // 중복 인스턴스 제거
+        }
+    }
+
     public void AcquireItem(Item newItem)
     {
-        // 중복 아이템이 아닐 때만 추가
-        if (!acquiredItems.Exists(item => item.itemName == newItem.itemName))
+        if (newItem == null)
         {
-            acquiredItems.Add(newItem);
+            Debug.LogWarning("Failed to call AcquireItem: The provided Item is null.");
+            return;
+        }
 
-            // EquipmentBagUI에 업데이트 요청
-            EquipmentBagUI equipmentBagUI = FindObjectOfType<EquipmentBagUI>();
-            if (equipmentBagUI != null)
-            {
-                equipmentBagUI.UpdateEquipmentUI();
-            }
+        // 중복 아이템 체크 및 추가
+        if (!GameManager.gm.acquiredItems.Exists(item => item.itemName == newItem.itemName))
+        {
+            GameManager.gm.acquiredItems.Add(newItem);
+            Debug.Log($"{newItem.itemName} has been added to GameManager.");
 
-            // GameManager에 아이템 추가
-            if (GameManager.gm != null)
-            {
-                GameManager.gm.AddAcquiredItem(newItem);
-            }
-            else
-            {
-                Debug.LogWarning("GameManager 인스턴스를 찾을 수 없습니다.");
-            }
+            // 아이템 획득 이벤트 발행
+            OnItemAcquired?.Invoke();
+        }
+        else
+        {
+            Debug.Log($"{newItem.itemName} is already acquired. Preventing duplicate addition.");
         }
     }
 }

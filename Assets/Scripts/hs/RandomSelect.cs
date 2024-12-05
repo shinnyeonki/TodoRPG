@@ -11,7 +11,7 @@ public class RandomSelect : MonoBehaviour
     public Transform panelParent; // 패널을 생성할 부모
     private GameObject currentPanel; // 현재 패널
     private Button confirmButton; // 확인 버튼
-    public EquipmentBag equipmentBag; // EquipmentBag 스크립트 참조
+    public EquipmentBag equipmentBag; // EquipmentBag 싱글톤 참조
     public int coinCost = 10; // 뽑기 시 필요한 코인 수
 
     void Start()
@@ -19,6 +19,11 @@ public class RandomSelect : MonoBehaviour
         foreach (Item item in items)
         {
             total += item.weight;
+        }
+
+        if (equipmentBag == null)
+        {
+            equipmentBag = EquipmentBag.Instance;
         }
     }
 
@@ -102,12 +107,12 @@ public class RandomSelect : MonoBehaviour
     }
 
     // 코인 UI 업데이트 메서드
-  private void UpdateCoinTextUI()
-{
-    if (GameManager.gm != null)
+    private void UpdateCoinTextUI()
     {
-        Debug.Log($"현재 남은 코인: {GameManager.gm.GetCoins()}");
-        // GameManager의 GetCoins()를 사용해 현재 상태 확인 (UI는 이벤트로 처리)
+        if (GameManager.gm != null)
+        {
+            Debug.Log($"현재 남은 코인: {GameManager.gm.GetCoins()}");
+            // GameManager의 GetCoins()를 사용해 현재 상태 확인 (UI는 이벤트로 처리)
+        }
     }
-}
 }

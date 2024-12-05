@@ -13,7 +13,6 @@ public class EquipmentBagUI : MonoBehaviour
     void Start()
     {
         Debug.Log("EquipmentBagUI Start 호출됨.");
-        UpdateEquipmentUI();
 
         if (itemOptionsPopup != null)
         {
@@ -24,6 +23,19 @@ public class EquipmentBagUI : MonoBehaviour
         {
             Debug.LogWarning("ItemOptionsPopup이 연결되지 않았습니다!");
         }
+    }
+
+    void OnEnable()
+    {
+        // EquipmentBag에서 발행하는 이벤트 구독
+        EquipmentBag.OnItemAcquired += UpdateEquipmentUI;
+        UpdateEquipmentUI(); // UI 활성화 시 최신 상태로 업데이트
+    }
+
+    void OnDisable()
+    {
+        // 이벤트 구독 해제
+        EquipmentBag.OnItemAcquired -= UpdateEquipmentUI;
     }
 
     public void UpdateEquipmentUI()
@@ -54,17 +66,18 @@ public class EquipmentBagUI : MonoBehaviour
                 Debug.Log($"아이템 이미지 설정됨: {item.itemName}");
                 itemImage.sprite = item.itemImage;
 
-                BoxCollider2D collider = itemImage.gameObject.AddComponent<BoxCollider2D>();
-                collider.isTrigger = true;
-
-                RectTransform rectTransform = itemImage.GetComponent<RectTransform>();
-                collider.size = rectTransform.rect.size;
-                collider.offset = Vector2.zero;
-                Debug.Log($"Collider 크기 설정됨: {collider.size}");
-
-                ItemClickHandler clickHandler = itemImage.gameObject.AddComponent<ItemClickHandler>();
-                clickHandler.Initialize(item, this);
-                Debug.Log($"ItemClickHandler 추가 및 초기화됨: {item.itemName}");
+                // Button 컴포넌트 가져오기
+                Button itemButton = itemImage.GetComponent<Button>();
+                if (itemButton != null)
+                {
+                    itemButton.onClick.RemoveAllListeners(); // 중복 등록 방지
+                    itemButton.onClick.AddListener(() => OnItemClick(item, itemImage.transform.position));
+                    Debug.Log($"아이템 버튼 클릭 이벤트 등록됨: {item.itemName}");
+                }
+                else
+                {
+                    Debug.LogWarning("아이템 이미지에 Button 컴포넌트가 없습니다.");
+                }
             }
             else
             {
@@ -74,30 +87,29 @@ public class EquipmentBagUI : MonoBehaviour
     }
 
     public void OnItemClick(Item item, Vector3 position)
-{
-    Debug.Log($"OnItemClick 호출됨: {item.itemName}");
-
-    selectedItem = item;
-
-    if (itemOptionsPopup != null)
     {
-        RectTransform popupRect = itemOptionsPopup.GetComponent<RectTransform>();
+        Debug.Log($"OnItemClick 호출됨: {item.itemName}");
 
-        // X축을 오른쪽으로 이동
-        float offsetX = 1f; // 오른쪽으로 이동할 거리 (픽셀 단위)
-        popupRect.position = new Vector3(position.x + offsetX, position.y, position.z);
+        selectedItem = item;
 
-        popupRect.SetAsLastSibling(); // 팝업을 UI 계층 가장 앞으로 이동
+        if (itemOptionsPopup != null)
+        {
+            RectTransform popupRect = itemOptionsPopup.GetComponent<RectTransform>();
 
-        itemOptionsPopup.SetActive(true);
-        Debug.Log("ItemOptionsPopup 활성화 완료.");
+            // X축을 오른쪽으로 이동
+            float offsetX = 50f; // 오른쪽으로 이동할 거리 (픽셀 단위)
+            popupRect.position = new Vector3(position.x + offsetX, position.y, position.z);
+
+            popupRect.SetAsLastSibling(); // 팝업을 UI 계층 가장 앞으로 이동
+
+            itemOptionsPopup.SetActive(true);
+            Debug.Log("ItemOptionsPopup 활성화 완료.");
+        }
+        else
+        {
+            Debug.LogWarning("ItemOptionsPopup이 연결되지 않았습니다!");
+        }
     }
-    else
-    {
-        Debug.LogWarning("ItemOptionsPopup이 연결되지 않았습니다!");
-    }
-}
-
 
     public void OnEquipButtonClick()
     {
