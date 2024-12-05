@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class LoginManager : MonoBehaviour
 {
     public InputField EmailInputField;
     public InputField PasswordInputField;
 
-    private string savedEmail = "";
-    private string savedPassword = "";
+    // 여러 계정을 저장하는 Dictionary
+    private static Dictionary<string, string> accountDatabase = new Dictionary<string, string>();
 
     public void CreateAccount()
     {
@@ -22,9 +23,14 @@ public class LoginManager : MonoBehaviour
             return;
         }
 
-        savedEmail = email;
-        savedPassword = password;
-        Debug.Log($"Account created successfully! Email: {savedEmail}");
+        if (accountDatabase.ContainsKey(email))
+        {
+            Debug.LogError("This email is already registered!");
+            return;
+        }
+
+        accountDatabase[email] = password; // 계정 추가
+        Debug.Log($"Account created successfully! Email: {email}");
     }
 
     public void Login()
@@ -33,10 +39,10 @@ public class LoginManager : MonoBehaviour
         string email = EmailInputField.text;
         string password = PasswordInputField.text;
 
-        if (email == savedEmail && password == savedPassword)
+        if (accountDatabase.ContainsKey(email) && accountDatabase[email] == password)
         {
             Debug.Log("Login successful! Loading Friend scene...");
-            SceneManager.LoadScene("Friend"); // 씬 이름으로 로드
+            SceneManager.LoadScene("Main"); // 씬 이름으로 로드
         }
         else
         {
