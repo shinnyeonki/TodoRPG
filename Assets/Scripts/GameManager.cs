@@ -6,14 +6,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
+
     private int coins = 100; // 초기 코인 값
     private int score = 0; // 초기 점수
     private int hp = 100; // 초기 hp
+
     public static Queue<string> todoDone = new Queue<string>(); // Todo 완료 이벤트 큐
     public static Queue<GameObject> monsters = new Queue<GameObject>(); // 몬스터 큐
 
     public List<Item> acquiredItems = new List<Item>(); // 획득한 아이템 목록
     public Item currentEquippedItem; // 현재 장착된 아이템
+
+    // 현재 로그인된 계정 이메일
+    public string LoggedInEmail { get; private set; }
 
     // 코인 값 변경 이벤트
     public event Action<int> OnCoinsUpdated;
@@ -45,6 +50,13 @@ public class GameManager : MonoBehaviour
         this.hp = 100;
     }
 
+    // 현재 로그인된 계정을 설정하는 메서드
+    public void SetLoggedInEmail(string email)
+    {
+        LoggedInEmail = email;
+        Debug.Log("현재 로그인된 계정: " + LoggedInEmail);
+    }
+
     public void AddAcquiredItem(Item newItem)
     {
         if (newItem == null)
@@ -63,8 +75,6 @@ public class GameManager : MonoBehaviour
             Debug.Log($"{newItem.itemName}은(는) 이미 GameManager의 획득 목록에 있습니다.");
         }
     }
-
-
 
     // 코인 추가 메서드
     public void AddCoins(int amount)
@@ -140,7 +150,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Todo 완료 이벤트가 추가되었습니다: " + todoKey);
     }
 
-    // 새로운 획득 아이템을 추가하는 메서드
+    // 기존에 있던 AddAcquiredItem(string) 메서드: 사용하지 않으므로 경고
     public void AddAcquiredItem(string itemName)
     {
         Debug.LogWarning("이 메서드는 사용하지 않습니다. AddAcquiredItem(Item newItem)을 사용하세요.");
