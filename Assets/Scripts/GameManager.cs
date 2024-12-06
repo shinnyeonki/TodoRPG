@@ -38,6 +38,13 @@ public class GameManager : MonoBehaviour
         OnCoinsUpdated?.Invoke(coins);
     }
 
+    public void ResetGame()
+    {
+        Debug.Log("reset score,hp");
+        this.score = 0;
+        this.hp = 100;
+    }
+
     public void AddAcquiredItem(Item newItem)
     {
         if (newItem == null)

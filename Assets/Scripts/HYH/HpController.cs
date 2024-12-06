@@ -9,6 +9,7 @@ public class HpController : MonoBehaviour
     // Start is called before the first frame update
     public Slider gauge;
     public TextMeshProUGUI gaugeText;
+    public GameObject gameOverPanel;
 
     private void Start()
     {
@@ -27,9 +28,7 @@ public class HpController : MonoBehaviour
         GameManager.gm.GainHP(-10);
         if (GameManager.gm.GetHp() <= 0)
         {
-            GameManager.gm.SetScore(0);
-            Debug.Log("score : "+GameManager.gm.GetScore());
-            GameManager.gm.SetHp(0);
+            gameOverPanel.SetActive(true);
             return;
         }
     }
