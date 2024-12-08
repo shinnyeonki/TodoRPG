@@ -31,8 +31,8 @@ public class InputFormObjectController : MonoBehaviour
 
     public void AddTask()
     {
-        //  todo list 가져오기
-        var todoList = StorageManager.GetAll();
+        // todo list 가져오기
+        var todoList = StorageManager.GetAll(GameManager.gm.LoggedInEmail); // 수정
         if (todoList == null)
         { // todo list 에 아무것도 없을 때 만들어서 사용
             Debug.Log("todoList : null");
@@ -41,7 +41,6 @@ public class InputFormObjectController : MonoBehaviour
         Debug.Log("todoList count : " + todoList.Count);
         // todo list 에 추가하고 저장 key를 고유하게 고유하게 식별하기
         var key = Convert.ToString((DateTime.UtcNow - UnixEpoch).TotalMilliseconds); // 고유한 키 생성
-
 
         // TodoItem 객체 생성해서 데이터 넣기
         var selectedDate = (datePicker.SelectedDate != DateTime.MinValue) ? (DateTime)datePicker.SelectedDate : DateTime.UtcNow.AddDays(1);
@@ -54,11 +53,9 @@ public class InputFormObjectController : MonoBehaviour
             IsPriority = false // 기본 우선순위를 false로 설정
         };
 
-
-
         // todo list에 추가하고 저장
         todoList.Add(key, todoItem);
-        StorageManager.Save(todoList);
+        StorageManager.Save(GameManager.gm.LoggedInEmail, todoList); // 수정
 
         // todo list 추가
         taskArea.transform.GetComponent<TodoListContentController>().AddTodo(key, todoItem);

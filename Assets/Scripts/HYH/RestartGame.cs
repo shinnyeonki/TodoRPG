@@ -10,5 +10,6 @@ public class RestartGame : MonoBehaviour
     {
         GameManager.gm.ResetGame();
         gameOverPanel.SetActive(false);
+        GameManager.gm.SaveUserData();
     }
 }

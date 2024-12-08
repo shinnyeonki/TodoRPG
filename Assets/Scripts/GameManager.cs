@@ -3,6 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+[Serializable]
+public class SerializableList<T>
+{
+    public List<T> Items = new List<T>();
+
+    public SerializableList() { }
+
+    public SerializableList(List<T> items)
+    {
+        Items = items;
+    }
+
+    public List<T> ToList()
+    {
+        return Items;
+    }
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm; // 싱글톤 인스턴스
@@ -29,6 +47,7 @@ public class GameManager : MonoBehaviour
         {
             gm = this;
             DontDestroyOnLoad(gameObject); // 씬 전환 시 GameManager 유지
+            Debug.Log("GameManager가 초기화되었습니다.");
         }
         else if (gm != this)
         {
@@ -37,11 +56,86 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     void Start()
     {
-        // 시작 시 코인 값 변경 이벤트 호출
+        if (!string.IsNullOrEmpty(LoggedInEmail))
+        {
+            LoadUserData();
+        }
+        else
+        {
+            Debug.LogWarning("로그인된 사용자가 없습니다.");
+        }
+
         OnCoinsUpdated?.Invoke(coins);
     }
+
+    public void SaveUserData()
+    {
+        if (string.IsNullOrEmpty(LoggedInEmail))
+        {
+            Debug.LogError("로그인된 이메일이 없습니다. 데이터를 저장할 수 없습니다.");
+            return;
+        }
+
+        PlayerPrefs.SetInt($"{LoggedInEmail}_coins", coins);
+        Debug.Log($"Coins 저장 완료: {coins}");
+
+        PlayerPrefs.SetInt($"{LoggedInEmail}_score", score);
+        Debug.Log($"Score 저장 완료: {score}");
+
+        PlayerPrefs.SetInt($"{LoggedInEmail}_hp", hp);
+        Debug.Log($"HP 저장 완료: {hp}");
+
+        string acquiredItemsJson = JsonUtility.ToJson(new SerializableList<Item>(acquiredItems));
+        PlayerPrefs.SetString($"{LoggedInEmail}_acquiredItems", acquiredItemsJson);
+        Debug.Log($"획득한 아이템 저장 완료: {acquiredItemsJson}");
+
+        string currentItemJson = JsonUtility.ToJson(currentEquippedItem);
+        PlayerPrefs.SetString($"{LoggedInEmail}_currentEquippedItem", currentItemJson);
+        Debug.Log($"현재 장착 아이템 저장 완료: {currentItemJson}");
+
+        PlayerPrefs.Save();
+    }
+
+    public void LoadUserData()
+    {
+        if (string.IsNullOrEmpty(LoggedInEmail))
+        {
+            Debug.LogError("로그인된 이메일이 없습니다. 데이터를 불러올 수 없습니다.");
+            return;
+        }
+
+        coins = PlayerPrefs.GetInt($"{LoggedInEmail}_coins", 100);
+        Debug.Log($"Coins 로드 완료: {coins}");
+
+        score = PlayerPrefs.GetInt($"{LoggedInEmail}_score", 0);
+        Debug.Log($"Score 로드 완료: {score}");
+
+        hp = PlayerPrefs.GetInt($"{LoggedInEmail}_hp", 100);
+        Debug.Log($"HP 로드 완료: {hp}");
+
+        string acquiredItemsJson = PlayerPrefs.GetString($"{LoggedInEmail}_acquiredItems", "{\"Items\":[]}");
+        if (string.IsNullOrEmpty(acquiredItemsJson) || !acquiredItemsJson.Contains("Items"))
+        {
+            acquiredItemsJson = "{\"Items\":[]}";
+        }
+        acquiredItems = JsonUtility.FromJson<SerializableList<Item>>(acquiredItemsJson)?.ToList() ?? new List<Item>();
+        Debug.Log($"획득한 아이템 로드 완료: {acquiredItemsJson}");
+
+        string currentItemJson = PlayerPrefs.GetString($"{LoggedInEmail}_currentEquippedItem", "{}");
+        if (string.IsNullOrEmpty(currentItemJson))
+        {
+            currentItemJson = "{}";
+        }
+        currentEquippedItem = JsonUtility.FromJson<Item>(currentItemJson);
+        Debug.Log($"현재 장착 아이템 로드 완료: {currentItemJson}");
+    }
+
+
+
+
 
     public void ResetGame()
     {

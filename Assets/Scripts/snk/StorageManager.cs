@@ -19,20 +19,23 @@ public class StorageManager
         public bool IsPriority { get; set; }
     }
 
-    public static Dictionary<string, TodoItem> GetAll()
+    public static Dictionary<string, TodoItem> GetAll(string email)
     {
-        if (!PlayerPrefs.HasKey(masterKey))
+        string userKey = $"{masterKey}_{email}";
+        if (!PlayerPrefs.HasKey(userKey))
         {
-            return null;
+            return new Dictionary<string, TodoItem>();
         }
-        string masterKeyValue = PlayerPrefs.GetString(masterKey);
-        return Deserialize<Dictionary<string, TodoItem>>(masterKeyValue); //역직렬화 해서 반환 즉 저장된 데이터를 string + 객체 = dictionary로 반환
+        string masterKeyValue = PlayerPrefs.GetString(userKey);
+        return Deserialize<Dictionary<string, TodoItem>>(masterKeyValue);
     }
 
-    public static void Save(Dictionary<string, TodoItem> todoList)
+    public static void Save(string email, Dictionary<string, TodoItem> todoList)
     {
-        PlayerPrefs.SetString(masterKey, Serialize(todoList));
+        string userKey = $"{masterKey}_{email}";
+        PlayerPrefs.SetString(userKey, Serialize(todoList));
     }
+
 
     // > Saving a Dictionary To PlayerPrefs - Unity Answers  
     // > https://answers.unity.com/questions/1022800/saving-a-dictionary-to-playerprefs.html

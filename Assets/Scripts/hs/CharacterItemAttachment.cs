@@ -75,6 +75,7 @@ public class CharacterItemAttachment : MonoBehaviour
         GameManager.gm.currentEquippedItem = item;
 
         Debug.Log($"아이템 장착됨: {item.itemName}, 크기: {itemObject.transform.localScale}, Sorting Order: {renderer.sortingOrder}");
+        GameManager.gm.SaveUserData();
     }
 
     public void UnequipItem()
@@ -87,6 +88,7 @@ public class CharacterItemAttachment : MonoBehaviour
             currentEquippedItem = null;
             GameManager.gm.currentEquippedItem = null;
             Debug.Log("현재 장착 아이템 해제됨.");
+            GameManager.gm.SaveUserData();
         }
     }
 }

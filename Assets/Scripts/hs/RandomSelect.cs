@@ -75,6 +75,7 @@ public class RandomSelect : MonoBehaviour
             }
 
             currentPanel.SetActive(true);
+            GameManager.gm.SaveUserData();
         }
         else
         {
