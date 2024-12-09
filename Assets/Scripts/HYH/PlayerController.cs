@@ -33,12 +33,13 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator NextMonster()
     {
+        GameManager.monsters.Dequeue();
+        GameManager.todoDone.Dequeue();
+        
         m_gainAlert.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         m_gainAlert.SetActive(false);
         
-        GameManager.monsters.Dequeue();
-        GameManager.todoDone.Dequeue();
 
         if(GameManager.monsters.Count > 0)
             m_scene.SpawnMonsters();
