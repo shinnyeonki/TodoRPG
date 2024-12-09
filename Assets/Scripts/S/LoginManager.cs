@@ -30,13 +30,8 @@ public class LoginManager : MonoBehaviour
         }
 
         accountDatabase[email] = password; // 계정 추가
-
-        // 계정 정보를 PlayerPrefs에 저장
-        PlayerPrefs.SetString($"Account_{email}", password);
-
         Debug.Log($"Account created successfully! Email: {email}");
     }
-
 
     public void Login()
     {
@@ -44,49 +39,25 @@ public class LoginManager : MonoBehaviour
         string email = EmailInputField.text;
         string password = PasswordInputField.text;
 
-        if (PlayerPrefs.HasKey($"Account_{email}"))
+        if (accountDatabase.ContainsKey(email) && accountDatabase[email] == password)
         {
-            string storedPassword = PlayerPrefs.GetString($"Account_{email}");
-            if (storedPassword == password)
-            {
-                Debug.Log("Login successful! Loading Main scene...");
+            Debug.Log("Login successful! Loading Main scene...");
 
-                if (GameManager.gm != null)
-                {
-                    GameManager.gm.SetLoggedInEmail(email);
-                    GameManager.gm.LoadUserData(); // 기존 사용자 데이터 로드
-                    Debug.Log("로그인 후 사용자 데이터 로드 완료.");
-                }
-                else
-                {
-                    Debug.LogError("GameManager가 존재하지 않습니다. GameManager를 씬에 추가했는지 확인하세요.");
-                }
-
-                SceneManager.LoadScene("Main");
-            }
-            else
-            {
-                Debug.LogError("Invalid password!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Account does not exist! 새로운 계정을 생성합니다.");
-
-            // 새로운 계정을 위한 기본값 설정
-            PlayerPrefs.SetString($"Account_{email}", password);
-            Debug.Log($"새 계정 생성: {email}");
-
+            // 여기서 GameManager에 로그인된 계정 정보 등록
             if (GameManager.gm != null)
             {
                 GameManager.gm.SetLoggedInEmail(email);
-                GameManager.gm.SaveUserData(); // 새로운 사용자 데이터 저장
-                Debug.Log("새 계정 데이터 저장 완료.");
             }
+            else
+            {
+                Debug.LogWarning("GameManager가 존재하지 않습니다! GameManager를 씬에 추가했는지 확인하세요.");
+            }
+
+            SceneManager.LoadScene("Main"); // 씬 로드
+        }
+        else
+        {
+            Debug.LogError("Invalid email or password!");
         }
     }
-
-
-
-
 }

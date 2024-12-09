@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class FriendManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class FriendManager : MonoBehaviour
         SortByScoreButton.onClick.AddListener(SortByScore);
 
         // UI 초기화
+        LoadFriendListFromGameManager();
         UpdateFriendListUI();
     }
 
@@ -35,53 +37,87 @@ public class FriendManager : MonoBehaviour
             return;
         }
 
-        // 친구 데이터 추가
-        if (DataManager.Instance != null)
+        if (DataManager.Instance == null)
         {
-            DataManager.Instance.AddFriend(email, 0); // 점수 기본값은 0으로 설정
-            Debug.Log($"Added Friend to DataManager: {email}");
-        }
-        else
-        {
-            Debug.LogError("DataManager.Instance is null!");
+            Debug.LogError("DataManager가 null입니다. 친구를 추가할 수 없습니다.");
             return;
         }
+
+        // 친구 데이터 추가
+        DataManager.Instance.AddFriend(email, 0); // 점수 기본값은 0
+        Debug.Log($"Added Friend: {email}");
 
         // UI 업데이트
         UpdateFriendListUI();
     }
 
+
     // 이메일로 정렬
     public void SortByEmail()
     {
-        if (DataManager.Instance != null)
+        if (DataManager.Instance == null)
         {
-            DataManager.Instance.SortFriendsByEmail();
-            UpdateFriendListUI();
+            Debug.LogError("DataManager가 null입니다. 정렬할 수 없습니다.");
+            return;
         }
+
+        // 이메일 기준으로 정렬
+        DataManager.Instance.FriendList.Sort((a, b) => string.Compare(a.Email, b.Email, StringComparison.OrdinalIgnoreCase));
+
+        // UI 업데이트
+        UpdateFriendListUI();
+        Debug.Log("Friend list sorted by email.");
     }
 
     // 점수로 정렬
     public void SortByScore()
     {
-        if (DataManager.Instance != null)
+        if (DataManager.Instance == null)
         {
-            DataManager.Instance.SortFriendsByScore();
-            UpdateFriendListUI();
+            Debug.LogError("DataManager가 null입니다. 정렬할 수 없습니다.");
+            return;
+        }
+
+        // 점수 기준으로 정렬 (내림차순)
+        DataManager.Instance.FriendList.Sort((a, b) => b.Score.CompareTo(a.Score));
+
+        // UI 업데이트
+        UpdateFriendListUI();
+        Debug.Log("Friend list sorted by score.");
+    }
+
+
+    private void LoadFriendListFromGameManager()
+    {
+        if (DataManager.Instance == null)
+        {
+            Debug.LogError("DataManager가 null입니다. 데이터를 로드할 수 없습니다.");
+            return;
+        }
+
+        if (DataManager.Instance.FriendList.Count == 0)
+        {
+            DataManager.Instance.AddFriend("friend1@email.com", 100);
+            DataManager.Instance.AddFriend("friend2@email.com", 200);
+            DataManager.Instance.AddFriend("friend3@email.com", 150);
+            DataManager.Instance.AddFriend("friend4@email.com", 1000);
+            DataManager.Instance.AddFriend("friend5@email.com", 30);
         }
     }
 
     private void UpdateFriendListUI()
     {
-        if (DataManager.Instance == null) return;
+        if (DataManager.Instance == null)
+        {
+            Debug.LogError("DataManager가 null입니다. UI를 업데이트할 수 없습니다.");
+            return;
+        }
 
-        // 기존 UI 클리어
         foreach (Transform child in UnifiedListContent)
         {
             Destroy(child.gameObject);
         }
 
-        // DataManager의 친구 리스트를 가져와 UI 갱신
         List<Friend> friendList = DataManager.Instance.FriendList;
 
         float itemHeight = 30f; // 각 항목 간 간격
@@ -94,11 +130,9 @@ public class FriendManager : MonoBehaviour
         {
             Friend friend = friendList[i];
 
-            // 새 텍스트 오브젝트 생성
             GameObject newFriendText = new GameObject("FriendText");
             newFriendText.transform.SetParent(UnifiedListContent);
 
-            // Text 컴포넌트 추가 및 설정
             Text textComponent = newFriendText.AddComponent<Text>();
             textComponent.text = $"{friend.Email} - {friend.Score}";
             textComponent.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
@@ -106,7 +140,6 @@ public class FriendManager : MonoBehaviour
             textComponent.fontSize = 15;
             textComponent.alignment = TextAnchor.UpperLeft;
 
-            // RectTransform 설정
             RectTransform rectTransform = newFriendText.GetComponent<RectTransform>();
             rectTransform.localScale = Vector3.one;
             rectTransform.sizeDelta = new Vector2(200, itemHeight);
@@ -115,6 +148,7 @@ public class FriendManager : MonoBehaviour
 
         Debug.Log("Friend list updated in UI.");
     }
+
 }
 
 [System.Serializable]
