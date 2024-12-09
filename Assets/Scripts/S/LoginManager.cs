@@ -8,12 +8,12 @@ public class LoginManager : MonoBehaviour
     public InputField EmailInputField;
     public InputField PasswordInputField;
 
-    // ¿©·¯ °èÁ¤À» ÀúÀåÇÏ´Â Dictionary
+    // ê°„ë‹¨í•œ ê³„ì • ë°ì´í„°ë² ì´ìŠ¤ ì˜ˆì‹œ
     private static Dictionary<string, string> accountDatabase = new Dictionary<string, string>();
 
     public void CreateAccount()
     {
-        Debug.Log("CreateAccount button clicked!"); // ¹öÆ° µ¿ÀÛ È®ÀÎ
+        Debug.Log("CreateAccount button clicked!");
         string email = EmailInputField.text;
         string password = PasswordInputField.text;
 
@@ -29,20 +29,31 @@ public class LoginManager : MonoBehaviour
             return;
         }
 
-        accountDatabase[email] = password; // °èÁ¤ Ãß°¡
+        accountDatabase[email] = password; // ê³„ì • ì¶”ê°€
         Debug.Log($"Account created successfully! Email: {email}");
     }
 
     public void Login()
     {
-        Debug.Log("Login button clicked!"); // ¹öÆ° µ¿ÀÛ È®ÀÎ
+        Debug.Log("Login button clicked!");
         string email = EmailInputField.text;
         string password = PasswordInputField.text;
 
         if (accountDatabase.ContainsKey(email) && accountDatabase[email] == password)
         {
-            Debug.Log("Login successful! Loading Friend scene...");
-            SceneManager.LoadScene("Main"); // ¾À ÀÌ¸§À¸·Î ·Îµå
+            Debug.Log("Login successful! Loading Main scene...");
+
+            // ì—¬ê¸°ì„œ GameManagerì— ë¡œê·¸ì¸ëœ ê³„ì • ì •ë³´ ë“±ë¡
+            if (GameManager.gm != null)
+            {
+                GameManager.gm.SetLoggedInEmail(email);
+            }
+            else
+            {
+                Debug.LogWarning("GameManagerê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤! GameManagerë¥¼ ì”¬ì— ì¶”ê°€í–ˆëŠ”ì§€ í™•ì¸í•˜ì„¸ìš”.");
+            }
+
+            SceneManager.LoadScene("Main"); // ì”¬ ë¡œë“œ
         }
         else
         {
